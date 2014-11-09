@@ -6,7 +6,7 @@ var createFBO = require('gl-fbo')
 var pool      = require('typedarray-pool')
 var ndarray   = require('ndarray')
 var cwise     = require('cwise')
-var nextPow2  = require('bit-twiddle')
+var nextPow2  = require('bit-twiddle').nextPow2
 
 var selectRange = cwise({
   args: [
@@ -135,7 +135,7 @@ proto.query = function(x, y, radius) {
   var c1 = region.get(dx, dy, 1)
   var c2 = region.get(dx, dy, 2)
   var c3 = region.get(dx, dy, 3)
-
+  
   return new SelectResult(
      (dx + x0)|0, 
      (dy + y0)|0, 
