@@ -96,7 +96,7 @@ proto.end = function() {
   if(!this._readTimeout) {
     clearTimeout(this._readTimeout)
   }
-  this._readTimeout = setTimeout(this._readCallback, 20)
+  this._readTimeout = setTimeout(this._readCallback, 1)
 }
 
 proto.query = function(x, y, radius) {
