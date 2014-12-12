@@ -124,7 +124,7 @@ proto.query = function(x, y, radius) {
     [4, shape[0]*4, 1],
     4*(x0 + shape[0]*y0));
 
-  var closest = selectRange(region.hi(dims[0],dims[1],1), x, y)
+  var closest = selectRange(region.hi(dims[0],dims[1],1), radius, radius)
   var dx = closest[0]
   var dy = closest[1]
   if(dx < 0 || Math.pow(this.radius, 2) < closest[2]) {
