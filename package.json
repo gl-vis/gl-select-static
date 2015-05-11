@@ -1,6 +1,6 @@
 {
   "name": "gl-select-static",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Static point picking/selection routine",
   "main": "select.js",
   "directories": {
