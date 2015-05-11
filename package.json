@@ -1,6 +1,6 @@
 {
   "name": "gl-select-static",
-  "version": "1.0.3",
+  "version": "2.0.2",
   "description": "Static point picking/selection routine",
   "main": "select.js",
   "directories": {
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mikolalysenko/gl-select.git"
+    "url": "git://github.com/gl-vis/gl-select-static.git"
   },
   "keywords": [
     "point",
@@ -32,9 +32,9 @@
   "author": "Mikola Lysenko",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mikolalysenko/gl-select/issues"
+    "url": "https://github.com/gl-vis/gl-select-static/issues"
   },
-  "homepage": "https://github.com/mikolalysenko/gl-select",
+  "homepage": "https://github.com/gl-vis/gl-select-static",
   "browserify": {
     "transform": "cwise"
   }
