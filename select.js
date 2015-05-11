@@ -10,11 +10,11 @@ var nextPow2  = require('bit-twiddle').nextPow2
 
 var selectRange = cwise({
   args: [
-      'array', 
+      'array',
       {'offset': [0,0,1], 'array':0},
       {'offset': [0,0,2], 'array':0},
-      {'offset': [0,0,3], 'array':0}, 
-      'scalar', 
+      {'offset': [0,0,3], 'array':0},
+      'scalar',
       'scalar',
       'index'],
   pre: function() {
@@ -54,6 +54,9 @@ function SelectBuffer(gl, fbo, buffer) {
   var self = this
 
   this._readCallback = function() {
+    if(!self.gl) {
+      return
+    }
     fbo.bind()
     gl.readPixels(0,0,fbo.shape[0],fbo.shape[1],gl.RGBA,gl.UNSIGNED_BYTE,self.buffer)
     self._readTimeout = null
@@ -64,9 +67,15 @@ var proto = SelectBuffer.prototype
 
 Object.defineProperty(proto, 'shape', {
   get: function() {
+    if(!this.gl) {
+      return [0,0]
+    }
     return this.fbo.shape.slice()
   },
   set: function(v) {
+    if(!this.gl) {
+      return
+    }
     this.fbo.shape = v
     var c = this.fbo.shape[0]
     var r = this.fbo.shape[1]
@@ -84,7 +93,10 @@ Object.defineProperty(proto, 'shape', {
 proto.begin = function() {
   var gl = this.gl
   var shape = this.shape
-  
+  if(!gl) {
+    return
+  }
+
   this.fbo.bind()
   gl.clearColor(1,1,1,1)
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
@@ -92,6 +104,9 @@ proto.begin = function() {
 
 proto.end = function() {
   var gl = this.gl
+  if(!gl) {
+    return
+  }
   gl.bindFramebuffer(gl.FRAMEBUFFER, null)
   if(!this._readTimeout) {
     clearTimeout(this._readTimeout)
@@ -100,6 +115,10 @@ proto.end = function() {
 }
 
 proto.query = function(x, y, radius) {
+  if(!this.gl) {
+    return null
+  }
+
   var shape = this.fbo.shape.slice()
 
   x = x|0
@@ -135,18 +154,25 @@ proto.query = function(x, y, radius) {
   var c1 = region.get(dx, dy, 1)
   var c2 = region.get(dx, dy, 2)
   var c3 = region.get(dx, dy, 3)
-  
+
   return new SelectResult(
-     (dx + x0)|0, 
-     (dy + y0)|0, 
-     c0, 
-     [c1, c2, c3], 
+     (dx + x0)|0,
+     (dy + y0)|0,
+     c0,
+     [c1, c2, c3],
      Math.sqrt(closest[2]))
 }
 
 proto.dispose = function() {
+  if(!this.gl) {
+    return
+  }
   this.fbo.dispose()
   pool.free(this.buffer)
+  this.gl = null
+  if(this._readTimeout) {
+    clearTimeout(this._readTimeout)
+  }
 }
 
 function createSelectBuffer(gl, shape) {
