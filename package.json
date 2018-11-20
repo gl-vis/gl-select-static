@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "bit-twiddle": "^1.0.2",
-    "cwise": "git://github.com/archmoj/cwise.git#03dcf53e91ebdeb1df0f62263871b9fd42510c71",
+    "cwise": "git://github.com/archmoj/cwise.git#583a044b24e420b602e385e0d77dc76b310b9c16",
     "gl-fbo": "^2.0.3",
     "ndarray": "^1.0.15",
     "typedarray-pool": "^1.1.0"
