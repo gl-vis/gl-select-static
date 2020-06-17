@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "bit-twiddle": "^1.0.2",
-    "cwise": "^1.0.10",
     "gl-fbo": "^2.0.5",
     "ndarray": "^1.0.18",
     "typedarray-pool": "^1.1.0"
@@ -36,8 +35,5 @@
   "bugs": {
     "url": "https://github.com/gl-vis/gl-select-static/issues"
   },
-  "homepage": "https://github.com/gl-vis/gl-select-static",
-  "browserify": {
-    "transform": "cwise"
-  }
+  "homepage": "https://github.com/gl-vis/gl-select-static"
 }
