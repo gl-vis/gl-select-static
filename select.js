@@ -5,39 +5,37 @@ module.exports = createSelectBuffer
 var createFBO = require('gl-fbo')
 var pool      = require('typedarray-pool')
 var ndarray   = require('ndarray')
-var cwise     = require('cwise')
 var nextPow2  = require('bit-twiddle').nextPow2
 
-var selectRange = cwise({
-  args: [
-      'array',
-      {'offset': [0,0,1], 'array':0},
-      {'offset': [0,0,2], 'array':0},
-      {'offset': [0,0,3], 'array':0},
-      'scalar',
-      'scalar',
-      'index'],
-  pre: function() {
-    this.closestD2 = 1e8
-    this.closestX = -1
-    this.closestY = -1
-  },
-  body: function(r, g, b, a, x, y, idx) {
-    if(r < 255 || g < 255 || b < 255 || a < 255) {
-      var dx = x - idx[0]
-      var dy = y - idx[1]
-      var d2 = dx*dx + dy*dy
-      if(d2 < this.closestD2) {
-        this.closestD2 = d2
-        this.closestX = idx[0]
-        this.closestY = idx[1]
+var selectRange = function(arr, x, y) {
+  var closestD2 = 1e8
+  var closestX = -1
+  var closestY = -1
+
+  var ni = arr.shape[0]
+  var nj = arr.shape[1]
+  for(var i = 0; i < ni; i++) {
+    for(var j = 0; j < nj; j++) {
+      var r = arr.get(i, j, 0)
+      var g = arr.get(i, j, 1)
+      var b = arr.get(i, j, 2)
+      var a = arr.get(i, j, 3)
+
+      if(r < 255 || g < 255 || b < 255 || a < 255) {
+        var dx = x - i
+        var dy = y - j
+        var d2 = dx*dx + dy*dy
+        if(d2 < closestD2) {
+          closestD2 = d2
+          closestX = i
+          closestY = j
+        }
       }
     }
-  },
-  post: function() {
-    return [this.closestX, this.closestY, this.closestD2]
   }
-})
+
+  return [closestX, closestY, closestD2]
+}
 
 function SelectResult(x, y, id, value, distance) {
   this.coord = [x, y]
